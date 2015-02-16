@@ -88,8 +88,9 @@ class RestHelper(object):
             api = 'http://{}/controller/addNode'.format(host_port)
         data = {
             'hostname': new_host,
-            'user': self.rest_username, 'password': self.rest_password
-	    'services': role
+            'user': self.rest_username,
+            'password': self.rest_password,
+            'services': role
         }
         self.post(url=api, data=data)
 

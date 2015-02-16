@@ -24,6 +24,8 @@ class ClusterManager(object):
         self.memcached = MemcachedHelper(test_config)
 
         self.clusters = cluster_spec.yield_clusters()
+        self.index = cluster_spec.yield_indexservers
+        self.n1ql = cluster_spec.yield_n1qlservers
         self.servers = cluster_spec.yield_servers
         self.masters = cluster_spec.yield_masters
 
@@ -73,12 +75,12 @@ class ClusterManager(object):
                 role = None
                 for node in self.index():
                     if host in node:
-                        print "host: %s in index\n" %host
-                        role = 'inde'
+                       print "host: %s in index\n" %host
+                       role = 'index'
                 for node in self.n1ql():
                     if host in node:
-                        print "host: %s in n1ql\n" %host
-                        role = 'n1ql'
+                       print "host: %s in n1ql\n" %host
+                       role = 'n1ql'
                 uri = groups.get(server_group(servers[:initial_nodes],
                                               self.group_number, i))
                 self.rest.add_node(master, host, role, uri)

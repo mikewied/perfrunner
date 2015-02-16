@@ -70,7 +70,23 @@ class ClusterSpec(Config):
         for _, servers in self.yield_clusters():
             for server in servers:
                 yield server
-
+    @safe
+    def yield_n1qlbyclusters(self):
+        for cluster_name, servers in self.config.items('n1ql'):
+                yield cluster_name, servers.split()
+    @safe
+    def yield_indexbyclusters(self):
+        for cluster_name, servers in self.config.items('index'):
+                yield cluster_name,servers.split()
+    @safe
+    def yield_n1qlservers(self):
+        for _, servers in self.yield_n1qlbyclusters():
+                yield servers
+    @safe
+    def yield_indexservers(self):
+        for _, servers in self.yield_indexbyclusters():
+                yield servers
+   
     @safe
     def yield_n1qlbyclusters(self):
         for cluster_name, servers in self.config.items('n1ql'):
