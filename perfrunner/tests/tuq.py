@@ -28,11 +28,11 @@ class TuqTest(PerfTest):
         ]
         for master in self.cluster_spec.yield_masters():
             for bucket in self.test_config.buckets:
-                using_gsi = self.test_config.bucket.use_gsi
+                use_gsi = self.test_config.bucket.use_gsi
                 for statement in statements:
                     host = master.split(':')[0]
                     start_time_ms = int(time.time() * 1000))
-                    self.rest.exec_n1ql_stmnt(host, statement.format(bucket))
+                    self.rest.exec_n1ql_stmnt(host, statement.format(bucket), use_gsi)
                     end_time_ms = int(time.time() * 1000))
                     logger.info('build index {} time {}'.format(bucket, end_time_ms - start_time_ms))
 
