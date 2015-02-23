@@ -5,25 +5,24 @@ larger_is_better = false
 
 [cluster]
 mem_quota = 204800
-initial_nodes = 1
 num_buckets = 1
-run_cbq = 0
 
 [bucket]
-replica_number = 0
+replica_number = 1
 password = password
+use_gsi = 1
 
 [compaction]
 db_percentage = 10
 
 [load]
-items = 100000000
+items = 10000
 size = 1024
 workers = 20
 doc_gen = new
 
 [index]
-index_type = 2i 
+index_type = basic 
 
 [access]
 creates = 0
