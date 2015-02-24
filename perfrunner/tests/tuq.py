@@ -28,8 +28,7 @@ class TuqTest(PerfTest):
         ]
         for master in self.cluster_spec.yield_masters():
             for bucket in self.test_config.buckets:
-                if self.test_config.bucket.use_gsi
-
+                use_gsi= self.test_config.bucket.use_gsi
                 for statement in statement:
                     host = master.split(':')[0]
                     start_time_ms = int(time.time() * 1000))
