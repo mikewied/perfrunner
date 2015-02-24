@@ -98,7 +98,7 @@ class ClusterManager(object):
         eviction_policy = self.test_config.bucket.eviction_policy
         threads_number = self.test_config.bucket.threads_number
         password = self.test_config.bucket.password
-	use_gsi = self.test_config.bucket.get_gsi
+	use_gsi = self.test_config.bucket.use_gsi
 
         for master in self.masters():
             for bucket_name in self.test_config.buckets:
