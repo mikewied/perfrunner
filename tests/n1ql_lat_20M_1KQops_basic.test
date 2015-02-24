@@ -1,0 +1,40 @@
+[test_case]
+test = perfrunner.tests.tuq.TuqTest
+title = 1 node, 20M docs, 3000 reads/sec, 3000 updates/sec, 1000 N1QL queries/sec, basic queries
+larger_is_better = false
+
+[cluster]
+mem_quota = 204800
+initial_nodes = 6
+num_buckets = 1
+
+[bucket]
+replica_number = 1
+password = password
+use_gsi = 1
+
+[compaction]
+db_percentage = 10
+
+[load]
+items = 20000000
+size = 1024
+workers = 20
+doc_gen = new
+
+[index]
+index_type = basic 
+
+[access]
+creates = 0
+reads = 3000
+updates = 3000
+deletes = 0
+throughput = 6000
+query_throughput = 1000
+items = 20000000
+size = 1024
+doc_gen = new
+workers = 10
+query_workers = 10
+time = 600
