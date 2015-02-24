@@ -108,7 +108,8 @@ class ClusterManager(object):
                                         replica_index=replica_index,
                                         eviction_policy=eviction_policy,
                                         threads_number=threads_number,
-                                        password=password)
+                                        password=password,
+					use_gsi=use_gsi)
 
     def configure_auto_compaction(self):
         compaction_settings = self.test_config.compaction
