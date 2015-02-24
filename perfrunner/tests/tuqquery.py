@@ -26,9 +26,9 @@ class TuqOptionsTest(QueryTests):
                 use_gsi = self.test_config.buckets.use_gsi
                 for statement in statements:
                     host = master.split(':')[0]
-                    start_time_ms = int(time.time() * 1000))
+                    start_time_ms = int(time.time() * 1000)
                     self.rest.exec_n1ql_stmnt(host, statement.format(bucket), use_gsi)
-                    end_time_ms = int(time.time() * 1000))
+                    end_time_ms = int(time.time() * 1000)
                     logger.info('build index {} time {}'.format(bucket, end_time_ms - start_time_ms))
 
     @with_stats

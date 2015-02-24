@@ -31,9 +31,9 @@ class TuqTest(PerfTest):
                 use_gsi= self.test_config.bucket.use_gsi
                 for statement in statement:
                     host = master.split(':')[0]
-                    start_time_ms = int(time.time() * 1000))
+                    start_time_ms = int(time.time() * 1000)
                     self.rest.exec_n1ql_stmnt(host, statement.format(bucket, use_gsi))
-                    end_time_ms = int(time.time() * 1000))
+                    end_time_ms = int(time.time() * 1000)
                     logger.info('{} time {}'.format(statement.format(bucket, use_gsi), end_time_ms - start_time_ms))
 
 
