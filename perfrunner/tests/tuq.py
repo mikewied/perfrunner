@@ -28,8 +28,8 @@ class TuqTest(PerfTest):
         ]
         for master in self.cluster_spec.yield_masters():
             for bucket in self.test_config.buckets:
-	        use_gsi = bucket.use_gsi
-                for statement in statements:
+                use_gsi= bucket.use_gsi
+                for statement in statement:
                     host = master.split(':')[0]
                     self.rest.exec_n1ql_stmnt(host, statement.format(bucket,use_gsi))
 
