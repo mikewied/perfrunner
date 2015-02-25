@@ -28,7 +28,6 @@ class TargetIterator(object):
 
     def __iter__(self):
         password = self.test_config.bucket.password
-        use_gsi = self.test_config.bucket.use_gsi
         prefix = self.prefix
         for master in self.cluster_spec.yield_masters():
             for bucket in self.test_config.buckets:
