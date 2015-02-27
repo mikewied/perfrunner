@@ -153,11 +153,10 @@ class RestHelper(object):
 
         cluster_spec = ClusterSpec()
         cbq_engine = cluster_spec.yield_n1qlservers
-        print cluster_spec
-        print cbq_engine
+        logger.info("{} \n {}".format(cluster_spec, cbq_engine))
         cbq_engine = cbq_engine.replace('8091','8093')
         api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` USING GSI".format(cbq_engine,name)'
-        print api
+        logger.info("{} \n".format(api))
         self.post(url=api)
         """
         this is a kludge awaiting checkin from 2i 3/1
