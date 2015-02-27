@@ -150,6 +150,11 @@ class RestHelper(object):
             data.update({'threadsNumber': threads_number})
         self.post(url=api, data=data)
 
+        cbq_engine = self.n1ql.replace('8091','8093')
+        api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` USING GSI".format(cbq_engine,name)'
+        self.post(url=api)
+        time.sleep (self.num_items * 60/1000000)
+ 
     def delete_bucket(self, host_port, name):
         logger.info('Removing bucket: {}'.format(name))
 
