@@ -152,7 +152,7 @@ class RestHelper(object):
         self.post(url=api, data=data)
 
         cluster_spec = ClusterSpec()
-        cbq_engine = self.cluster_spec.yield_n1qlservers.replace('8091','8093')
+        cbq_engine = cluster_spec.yield_n1qlservers.replace('8091','8093')
         api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` USING GSI".format(cbq_engine,name)'
         self.post(url=api)
         time.sleep (self.num_items * 60/1000000)
