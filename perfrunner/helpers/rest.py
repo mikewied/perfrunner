@@ -6,6 +6,7 @@ import requests
 from decorator import decorator
 from logger import logger
 from requests.exceptions import ConnectionError
+from perfrunner.settings import ClusterSpec
 
 MAX_RETRY = 5
 RETRY_DELAY = 5
