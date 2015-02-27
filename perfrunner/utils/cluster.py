@@ -105,7 +105,7 @@ class ClusterManager(object):
         eviction_policy = self.test_config.bucket.eviction_policy
         threads_number = self.test_config.bucket.threads_number
         password = self.test_config.bucket.password
-
+        use_gsi = self.test_config.bucket.use_gsi
 
         for master in self.masters():
             for bucket_name in self.test_config.buckets:
@@ -116,7 +116,8 @@ class ClusterManager(object):
                                         replica_index=replica_index,
                                         eviction_policy=eviction_policy,
                                         threads_number=threads_number,
-                                        password=password
+                                        password=password,
+                                        use_gsi=use_gsi
 				)
 
     def configure_auto_compaction(self):
