@@ -138,7 +138,8 @@ class ClusterSpec(Config):
     def paths(self):
         data_path = self.config.get('storage', 'data')
         index_path = self.config.get('storage', 'index')
-        return data_path, index_path
+        secondary_path = self.config.get('storage', 'secondary')
+        return data_path, index_path, secondary_path
 
     @property
     @safe
