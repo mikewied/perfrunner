@@ -37,6 +37,8 @@ class RestHelper(object):
         self.rest_username, self.rest_password = \
             cluster_spec.rest_credentials
         self.auth = (self.rest_username, self.rest_password)
+        self.n1ql_hosts = cluster_spec.yield_n1qlservers()
+        self.index_hosts = cluster_spec.yield_indexservers()
 
     @retry
     def get(self, **kwargs):
@@ -129,8 +131,9 @@ class RestHelper(object):
 
     def create_bucket(self, host_port, name, ram_quota, replica_number,
                       replica_index, eviction_policy, threads_number,
-                      password):
-        logger.info('Adding new bucket: {}'.format(name))
+                      password,use_gsi):
+
+        logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number))
 
         api = 'http://{}/pools/default/buckets'.format(host_port)
         data = {
@@ -149,7 +152,24 @@ class RestHelper(object):
         if threads_number:
             data.update({'threadsNumber': threads_number})
         self.post(url=api, data=data)
-
+        
+        for n1ql_host in  self.n1ql_hosts:
+             #need authentication params
+             if self.bucket.use_gsi:
+                 USE_GSI="USE GSI"
+             else:
+                 USE_GSI=""
+             api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI_str)'
+             logger.info('command to N1QL engine {} \n'.format(api))
+             self.post(url=api)
+             #need to wait on completion
+             time.sleep(self.num_items * 60/1000000)
+        """
+           this is a kludge necessitated because there is no other way to detect completion
+           no error is reported if no n1ql cbq defined, allows for subsequent creation of cbq-engine and or create primary 
+           index at later time, but before access begins
+        """
+ 
     def delete_bucket(self, host_port, name):
         logger.info('Removing bucket: {}'.format(name))
 
@@ -323,7 +343,7 @@ class RestHelper(object):
         api = 'http://{}/controller/reAddNode'.format(host_port)
         data = {'otpNode': self.get_otp_node_name(node)}
         self.post(url=api, data=data)
-
+        
     def set_delta_recovery_type(self, host_port, node):
         logger.info('Enabling delta recovery: {}'.format(node))
 

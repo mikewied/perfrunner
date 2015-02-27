@@ -78,9 +78,12 @@ class ClusterSpec(Config):
 
     @safe
     def yield_indexbyclusters(self):
-        for cluster_name, servers in self.config.items('index'):
-                yield cluster_name, servers.split()
-
+        try:
+            for cluster_name, servers in self.config.items('index'):
+                yield cluster_name,servers.split()
+        except NoSectionError:
+            pass
+                
     @safe
     def yield_n1qlservers(self):
         for _, servers in self.yield_n1qlbyclusters():
@@ -289,7 +292,8 @@ class ClusterSettings(object):
         self.sfwi = options.get('sfwi', self.SFWI)
         self.tcmalloc_aggressive_decommit = options.get('tcmalloc_aggressive_decommit',
                                                         self.TCMALLOC_AGGRESSIVE_DECOMMIT)
-
+        self.n1ql_hosts = []
+        self.index_hosts = []
 
 class StatsSettings(object):
 
@@ -458,7 +462,6 @@ class PhaseSettings(object):
         self.seq_reads = self.SEQ_READS
         self.seq_updates = self.SEQ_UPDATES
 
-        self.n1ql = None
         self.ddocs = None
         self.index_type = None
         self.qparams = {}
