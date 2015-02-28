@@ -81,7 +81,7 @@ class RestHelper(object):
         data = {'memoryQuota': mem_quota}
         self.post(url=api, data=data)
 
-    def add_node(self, host_port, new_host, role=None, uri=None):
+    def add_node(self, host_port, new_host, roles=None, uri=None):
         logger.info('Adding new node: {}'.format(new_host))
 
         if uri:
@@ -92,7 +92,7 @@ class RestHelper(object):
             'hostname': new_host,
             'user': self.rest_username,
             'password': self.rest_password,
-            'services': role
+            'services': roles
         }
         self.post(url=api, data=data)
 
