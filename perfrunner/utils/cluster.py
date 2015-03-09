@@ -92,7 +92,7 @@ class ClusterManager(object):
                 uri = groups.get(server_group(servers[:initial_nodes],
                                               self.group_number, i))
                 role = ':'.join(str(r) for r in roles)
-                role_param = "service_in=%s".%role_list
+                role_param = "service_in=\"%s\""%role_list
                 self.rest.add_node(master, host, role_param, uri)
 
             # Rebalance
