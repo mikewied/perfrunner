@@ -139,13 +139,6 @@ class RestHelper(object):
         logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number,USE_GSI))
 
         api = 'http://{}/pools/default/buckets'.format(host_port)
-        if password == "":
-            authType='none'
-            pswdType='Password'
-        else:
-            authType='sasl'
-            pswdType='saslPassword'
-
         data = {
             'name': name,
             'bucketType': 'membase',
@@ -153,9 +146,8 @@ class RestHelper(object):
             'evictionPolicy': eviction_policy,
             'replicaNumber': replica_number,
             'replicaIndex': replica_index,
-            authType: 'sasl',
-            pswdType: password,
-            'useGSI': USE_GSI,
+            'authType': 'sasl',
+            'saslPassword: password,
         }
 
         logger.info('bucket specification: {}'.format(data))
