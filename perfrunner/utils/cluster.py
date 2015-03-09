@@ -10,7 +10,7 @@ from perfrunner.helpers.remote import RemoteHelper
 from perfrunner.helpers.rest import RestHelper
 from perfrunner.settings import ClusterSpec, TestConfig
 from perfrunner.tests import TargetIterator
-
+from loger import logger
 
 class ClusterManager(object):
 
@@ -32,7 +32,7 @@ class ClusterManager(object):
         self.initial_nodes = test_config.cluster.initial_nodes
         self.mem_quota = test_config.cluster.mem_quota
         self.group_number = test_config.cluster.group_number or 1
-        logger.info("cluster spec {}".format(cluster_spec)
+        logger.info('cluster spec {}'.format(cluster_spec)
 
     def set_data_path(self):
         data_path, index_path = self.cluster_spec.paths
