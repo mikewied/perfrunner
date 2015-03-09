@@ -139,6 +139,13 @@ class RestHelper(object):
         logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number,USE_GSI))
 
         api = 'http://{}/pools/default/buckets'.format(host_port)
+        if password = "":
+            authType='none'
+            pswdType='Password'
+        else:
+            authType='sasl'
+            pswdType='saslPassword'
+
         data = {
             'name': name,
             'bucketType': 'membase',
@@ -146,8 +153,9 @@ class RestHelper(object):
             'evictionPolicy': eviction_policy,
             'replicaNumber': replica_number,
             'replicaIndex': replica_index,
-            'authType': 'sasl',
-            'saslPassword': password,
+            authType: 'sasl',
+            pswdType: password,
+            'useGSI': USE_GSI,
         }
 
         logger.info('bucket specification: {}'.format(data))
@@ -158,10 +166,11 @@ class RestHelper(object):
 
         cluster_spec = ClusterSpec()
         cbq_engine = cluster_spec.yield_n1qlservers
-        logger.info("cluster_spec {} \n cbq_engine {}".format(cluster_spec, cbq_engine))
+        logger.info('cluster_spec {} \n cbq_engine {}'.format(cluster_spec, cbq_engine))
         cbq_engine_host = cbq_engine[0].split(':')
         api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(cbq_engine,name,USE_GSI)'
-        logger.info("command to N1QL engine {} \n".format(api))
+        logger.info('command to N1QL engine {} \n'.format(api))
+        logger.info('*****************')
         self.post(url=api)
         """
         this is a kludge awaiting checkin from 2i 3/1
