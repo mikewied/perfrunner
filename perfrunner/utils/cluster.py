@@ -25,13 +25,14 @@ class ClusterManager(object):
 
         self.clusters = cluster_spec.yield_clusters()
         self.index = cluster_spec.yield_indexservers
-        self.n1ql = cluster_spec.yield_n1qlservers
+        self.n1ql_server = cluster_spec.yield_n1qlservers
         self.servers = cluster_spec.yield_servers
         self.masters = cluster_spec.yield_masters
 
         self.initial_nodes = test_config.cluster.initial_nodes
         self.mem_quota = test_config.cluster.mem_quota
         self.group_number = test_config.cluster.group_number or 1
+        logger.info("cluster spec {}".format(cluster_spec)
 
     def set_data_path(self):
         data_path, index_path = self.cluster_spec.paths
@@ -88,11 +89,13 @@ class ClusterManager(object):
                 for node in self.n1ql():
                     if host in node:
                         roles.append('n1ql')
+                        n1ql = host.split(':')[0] 
+
                 uri = groups.get(server_group(servers[:initial_nodes],
                                               self.group_number, i))
                 role = ':'.join(str(r) for r in roles)
                 role_param = "service_in=\"%s\""%role_list
-                self.rest.add_node(master, host, role_param, uri)
+                self.rest.add_node(master, n1ql, host, role_param, uri)
 
             # Rebalance
             master = servers[0]

@@ -80,7 +80,7 @@ class RestHelper(object):
         data = {'memoryQuota': mem_quota}
         self.post(url=api, data=data)
 
-    def add_node(self, host_port, new_host, roles=None, uri=None):
+    def add_node(self,  host_port, new_host, roles=None, uri=None):
         logger.info('Adding new node: {}'.format(new_host))
 
         if uri:
@@ -157,9 +157,9 @@ class RestHelper(object):
         self.post(url=api, data=data)
 
         cluster_spec = ClusterSpec()
- #       cbq_engine = cluster_spec.yield_n1qlservers
-        logger.info('*********\n cluster_spec {} \n cbq_engine {}'.format(cluster_spec, self.n1ql))
-        api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql,name,USE_GSI)'
+        n1ql = cluster_spec.yield_n1qlserver
+        logger.info('*********\n cluster_spec {} \n cbq_engine {}'.format(cluster_spec, n1ql))
+        api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(n1ql,name,USE_GSI)'
         logger.info('command to N1QL engine {} \n'.format(api))
         logger.info('*****************')
         logger.info('*****************')
