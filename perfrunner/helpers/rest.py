@@ -147,7 +147,7 @@ class RestHelper(object):
             'replicaNumber': replica_number,
             'replicaIndex': replica_index,
             'authType': 'sasl',
-            'saslPassword: password,
+            'saslPassword': password,
         }
 
         logger.info('bucket specification: {}'.format(data))
