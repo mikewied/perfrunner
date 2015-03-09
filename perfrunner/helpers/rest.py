@@ -158,7 +158,7 @@ class RestHelper(object):
 
         cluster_spec = ClusterSpec()
         n1qls = cluster_spec.yield_n1qlservers
-        n1ql = n1ql[0]
+        n1ql = n1qls[0]
         logger.info('*********\n cluster_spec {} \n cbq_engine {}'.format(cluster_spec, n1ql))
         api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(n1ql,name,USE_GSI)'
         logger.info('command to N1QL engine {} \n'.format(api))
