@@ -130,8 +130,13 @@ class RestHelper(object):
 
     def create_bucket(self, host_port, name, ram_quota, replica_number,
                       replica_index, eviction_policy, threads_number,
-                      password):
-        logger.info('Adding new bucket: {}'.format(name))
+                      password,use_gsi):
+	if use_gsi:
+            USE_GSI="USE_GSI"
+        else:
+            USE_GSI=""
+
+        logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number,USE_GSI))
 
         api = 'http://{}/pools/default/buckets'.format(host_port)
         data = {
@@ -151,16 +156,12 @@ class RestHelper(object):
             data.update({'threadsNumber': threads_number})
         self.post(url=api, data=data)
 
-        if use_gsi:
-           USE_GSI="USE GSI"
-        else:
-           USE_GSI=""
         cluster_spec = ClusterSpec()
         cbq_engine = cluster_spec.yield_n1qlservers
-        logger.info("{} \n {}".format(cluster_spec, cbq_engine))
-        cbq_engine_host = cbq_engine.split(':')
+        logger.info("cluster_spec {} \n cbq_engine {}".format(cluster_spec, cbq_engine))
+        cbq_engine_host = cbq_engine[0].split(':')
         api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(cbq_engine,name,USE_GSI)'
-        logger.info("{} \n".format(api))
+        logger.info("command to N1QL engine {} \n".format(api))
         self.post(url=api)
         """
         this is a kludge awaiting checkin from 2i 3/1
