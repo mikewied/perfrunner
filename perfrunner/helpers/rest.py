@@ -139,7 +139,7 @@ class RestHelper(object):
         logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number,USE_GSI))
 
         api = 'http://{}/pools/default/buckets'.format(host_port)
-        if password = "":
+        if password == "":
             authType='none'
             pswdType='Password'
         else:
