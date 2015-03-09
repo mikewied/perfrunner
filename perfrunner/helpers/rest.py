@@ -151,11 +151,15 @@ class RestHelper(object):
             data.update({'threadsNumber': threads_number})
         self.post(url=api, data=data)
 
+        if use_gsi:
+           USE_GSI="USE GSI"
+        else:
+           USE_GSI=""
         cluster_spec = ClusterSpec()
         cbq_engine = cluster_spec.yield_n1qlservers
         logger.info("{} \n {}".format(cluster_spec, cbq_engine))
-        cbq_engine = cbq_engine.replace('8091','8093')
-        api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` USING GSI".format(cbq_engine,name)'
+        cbq_engine_host = cbq_engine.split(':')
+        api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(cbq_engine,name,USE_GSI)'
         logger.info("{} \n".format(api))
         self.post(url=api)
         """
