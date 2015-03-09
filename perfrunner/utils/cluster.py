@@ -32,7 +32,7 @@ class ClusterManager(object):
         self.initial_nodes = test_config.cluster.initial_nodes
         self.mem_quota = test_config.cluster.mem_quota
         self.group_number = test_config.cluster.group_number or 1
-        logger.info('cluster spec {}'.format(cluster_spec)
+        logger.info('self debug'.format(self))
 
     def set_data_path(self):
         data_path, index_path = self.cluster_spec.paths
@@ -65,6 +65,7 @@ class ClusterManager(object):
                 self.rest.create_server_group(master, name=name)
 
     def add_nodes(self):
+        logger.info('cluster spec'.format(self.clusters))
         for (_, servers), initial_nodes in zip(self.clusters,
                                                self.initial_nodes):
             if initial_nodes < 2:  # Single-node cluster
