@@ -10,7 +10,7 @@ from perfrunner.helpers.remote import RemoteHelper
 from perfrunner.helpers.rest import RestHelper
 from perfrunner.settings import ClusterSpec, TestConfig
 from perfrunner.tests import TargetIterator
-from loger import logger
+from logger import logger
 
 class ClusterManager(object):
 
