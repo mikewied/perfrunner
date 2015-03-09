@@ -156,12 +156,14 @@ class RestHelper(object):
             data.update({'threadsNumber': threads_number})
         self.post(url=api, data=data)
 
-        cluster_spec = ClusterSpec()
-        cbq_engine = cluster_spec.yield_n1qlservers
-        logger.info('cluster_spec {} \n cbq_engine {}'.format(cluster_spec, cbq_engine))
-        cbq_engine_host = cbq_engine[0].split(':')
-        api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(cbq_engine,name,USE_GSI)'
+ #       cluster_spec = ClusterSpec()
+ #       cbq_engine = cluster_spec.yield_n1qlservers
+        logger.info('*********\n cluster_spec {} \n cbq_engine {}'.format(cluster_spec, self.n1ql))
+        api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql,name,USE_GSI)'
         logger.info('command to N1QL engine {} \n'.format(api))
+        logger.info('*****************')
+        logger.info('*****************')
+        logger.info('*****************')
         logger.info('*****************')
         self.post(url=api)
         """
