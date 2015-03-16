@@ -162,11 +162,9 @@ class RestHelper(object):
                api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(n1ql,name,USE_GSI)'
                logger.info('command to N1QL engine {} \n'.format(api))
                self.post(url=api)
-        """
-        this is a kludge awaiting checkin from 2i 3/1
-        """
                time.sleep(self.num_items * 60/1000000)
         """
+           this is a kludge necessitated because there is no other way to detect completion
            no error is reported if no n1ql cbq defined, allows for subsequent creation of cbq-engine and or create primary 
            index at later time, but before access begins
         """
