@@ -156,17 +156,16 @@ class RestHelper(object):
             data.update({'threadsNumber': threads_number})
         self.post(url=api, data=data)
         
-        for n1ql_host in self.cluster_spec.yield_n1qlservers
-            break;
-        if n1ql_host and not n1ql_host.isspace():
-           logger.info('****\n list of n1qlservers {}\n'.format(n1ql_host))
-           api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(n1ql,name,USE_GSI)'
-           logger.info('command to N1QL engine {} \n'.format(api))
-           self.post(url=api)
+        for n1ql_host in self.cluster_spec.yield_n1qlservers():
+            if n1ql_host and not n1ql_host.isspace():
+               logger.info('****\n list of n1qlservers {}\n'.format(n1ql_host))
+               api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(n1ql,name,USE_GSI)'
+               logger.info('command to N1QL engine {} \n'.format(api))
+               self.post(url=api)
         """
         this is a kludge awaiting checkin from 2i 3/1
         """
-           time.sleep (self.num_items * 60/1000000)
+               time.sleep (self.num_items * 60/1000000)
         """
            no error is reported if no n1ql cbq defined, allows for subsequent creation of cbq-engine and or create primary 
            index at later time, but before access begins
