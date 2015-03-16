@@ -165,7 +165,7 @@ class RestHelper(object):
         """
         this is a kludge awaiting checkin from 2i 3/1
         """
-               time.sleep (self.num_items * 60/1000000)
+               time.sleep(self.num_items * 60/1000000)
         """
            no error is reported if no n1ql cbq defined, allows for subsequent creation of cbq-engine and or create primary 
            index at later time, but before access begins
