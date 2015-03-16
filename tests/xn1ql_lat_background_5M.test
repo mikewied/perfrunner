@@ -1,0 +1,38 @@
+[test_case]
+test = perfrunner.tests.query.QueryLatencyTest
+title = 1 bucket x 20M x 2KB, noDGM, 4 x 1 views, 6K ops/sec queries 500/sec 
+summary = Mixed KV test, 1 bucket x 5M x 1KB, noDGM, 6K ops/sec queries 500/sec
+larger_is_better = false
+
+[stats]
+post_rss = 1
+
+[cluster]
+mem_quota = 204800
+initial_nodes = 1
+num_buckets = 1
+
+[compaction]
+db_percentage = 20
+
+[load]
+items = 5000000
+size = 1024
+workers = 20
+
+[index]
+views = [1, 1, 1, 1]
+
+[access]
+creates = 1
+reads = 50
+updates = 48
+deletes = 1
+throughput = 6000
+query_throughput = 500
+items = 5000000
+size = 1024
+workers = 24
+query_workers = 6
+time = 7200
+
