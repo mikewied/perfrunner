@@ -7,7 +7,7 @@ hermes =
 
 [clients]
 hosts =
-    172.23.97.74
+    172.23.86.128
 credentials = root:couchbase
 
 [storage]
