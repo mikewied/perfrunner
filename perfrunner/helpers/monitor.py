@@ -107,13 +107,12 @@ class Monitor(RestHelper):
                 break
         logger.info('Task {} successfully completed'.format(task_type))
 
-    def monitor_warmup(self, memcached, host_port, bucket):
-        logger.info('Monitoring warmup status: {}@{}'.format(bucket,
-                                                             host_port))
+    def monitor_warmup(self, memcahed, host_port, bucket):
+        logger.info('Monitoring warmup status: {}@{}'.format(bucket, host_port))
         host = host_port.split(':')[0]
-        memcached_port = self.get_memcached_port(host_port)
+        memcached_port = sef.get_memcached_port(host_port)
         while True:
-            stats = memcached.get_stats(host, memcached_port, bucket, 'warmup')
+            stats = memcahed.get_stats(host, memcached_port, bucket, 'warmup')
             state = stats['ep_warmup_state']
             if state == 'done':
                 return float(stats.get('ep_warmup_time', 0))
