@@ -70,8 +70,7 @@ class CbAgent(object):
             'interval': test.test_config.stats_settings.interval,
             'buckets': buckets,
             'hostnames': hostnames,
-            'sync_gateway_nodes':
-                test.remote.gateways if test.remote else None,
+            'sync_gateway_nodes': test.remote.gateways if test.remote else None,
         })()
         self.lat_interval = test.test_config.stats_settings.lat_interval
         if test.cluster_spec.ssh_credentials:
@@ -146,7 +145,7 @@ class CbAgent(object):
             settings.master_node = self.clusters[cluster]
             net_collector = Net(settings)
             self.collectors.append(net_collector)
-
+            
     def prepare_iostat(self, clusters, test):
         data_path, index_path  = test.cluster_spec.paths
         partitions = {'data': data_path}
