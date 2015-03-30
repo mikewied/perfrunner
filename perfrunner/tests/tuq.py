@@ -34,7 +34,7 @@ class TuqTest(PerfTest):
                     use_gsi_str= ""
                 for statement in statements:
                     host = master.split(':')[0]
-                    self.rest.exec_n1ql_stmnt(host, statement.format(bucket,use_gsi))
+                    self.rest.exec_n1ql_stmnt(host, statement.format(bucket,use_gsi_str))
 
     @with_stats
     def access(self):
