@@ -38,7 +38,7 @@ class RestHelper(object):
             cluster_spec.rest_credentials
         self.auth = (self.rest_username, self.rest_password)
         self.n1ql_hosts = cluster_spec.yield_n1qlservers()
-        self.indexer_hosts = cluster_spec.yield_indexservers()
+        self.index_hosts = cluster_spec.yield_indexservers()
 
     @retry
     def get(self, **kwargs):
@@ -132,12 +132,8 @@ class RestHelper(object):
     def create_bucket(self, host_port, name, ram_quota, replica_number,
                       replica_index, eviction_policy, threads_number,
                       password,use_gsi):
-	if use_gsi:
-            USE_GSI="USE_GSI"
-        else:
-            USE_GSI=""
 
-        logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number,USE_GSI))
+        logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number))
 
         api = 'http://{}/pools/default/buckets'.format(host_port)
         data = {
@@ -157,12 +153,16 @@ class RestHelper(object):
             data.update({'threadsNumber': threads_number})
         self.post(url=api, data=data)
         
-#        for n1ql_host in self.cluster_spec.yield_n1qlservers():
-        if self.n1ql_hosts and not self.n1ql_hosts.isspace():
-             logger.info('****\n list of n1qlservers {}\n'.format(self.n1ql_host))
-             api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI)'
+        for n1ql_host in  self.n1ql_hosts:
+             #need authentication params
+             if self.bucket.use_gsi:
+                 USE_GSI="USE GSI"
+             else:
+                 USE_GSI=""
+             api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI_str)'
              logger.info('command to N1QL engine {} \n'.format(api))
              self.post(url=api)
+             #need to wait on completion
              time.sleep(self.num_items * 60/1000000)
         """
            this is a kludge necessitated because there is no other way to detect completion
