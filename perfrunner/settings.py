@@ -7,7 +7,6 @@ from logger import logger
 
 from perfrunner.helpers.misc import uhex
 
-
 REPO = 'https://github.com/couchbaselabs/perfrunner'
 
 SHOWFAST = {'host': 'showfast.sc.couchbase.com', 'password': 'password'}
@@ -78,10 +77,12 @@ class ClusterSpec(Config):
     def yield_indexbyclusters(self):
         for cluster_name, servers in self.config.items('index'):
                 yield cluster_name,servers.split()
+                
     @safe
     def yield_n1qlservers(self):
         for _, servers in self.yield_n1qlbyclusters():
                 yield servers
+                
     @safe
     def yield_indexservers(self):
         for _, servers in self.yield_indexbyclusters():
@@ -334,6 +335,9 @@ class BucketSettings(object):
         )
         
         self.threads_number = options.get('threads_number')  # 2.x
+        
+        self.exp_pager_stime = int(options.get('exp_pager_stime',
+                                           self.EXPIRY_PAGER_SLEEP_TIME))
 
         self.exp_pager_stime = int(options.get('exp_pager_stime',
                                                self.EXPIRY_PAGER_SLEEP_TIME))
@@ -546,11 +550,8 @@ class GatewaySettings(PhaseSettings):
         self.num_nodes = int(options.get('num_nodes', self.NUM_NODES))
         self.logging_verbose = options.get('logging_verbose', self.LOGGING_VERBOSE)
         self.shadow = options.get('shadow', self.SHADOW)
-        self.config_url = options.get('config_url', self.CONFIG_URL)
+        self.config_url = options.get('config_url' self.CONFIG_URL)
         self.go_debug = options.get('go_debug', self.GO_DEBUG)
-        self.node0_cache_writer = options.get('node0_cache_writer', 'false')
-        self.node1_cache_writer = options.get('node1_cache_writer', 'false')
-        self.node2_cache_writer = options.get('node2_cache_writer', 'false')
 
 
 class GateloadSettings(PhaseSettings):
