@@ -172,7 +172,7 @@ class RebalanceTest(PerfTest):
             self.rest.rebalance(master, known_nodes, ejected_nodes)
 
             for _, host_port in new_nodes:
-                self.change_watermarks(host_port)
+                self.change_watermarks(host)
 
             self.monitor.monitor_rebalance(master)
 
