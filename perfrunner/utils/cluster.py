@@ -81,7 +81,7 @@ class ClusterManager(object):
             for i, host_port in enumerate(servers[1:initial_nodes],
                                           start=1):
                 host = host_port.split(':')[0]
-            roles = []
+            roles=""
             for node in self.data_servers():
                 if host in node:
                     roles='data'
