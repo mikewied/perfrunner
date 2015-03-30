@@ -553,7 +553,7 @@ class GatewaySettings(PhaseSettings):
         self.num_nodes = int(options.get('num_nodes', self.NUM_NODES))
         self.logging_verbose = options.get('logging_verbose', self.LOGGING_VERBOSE)
         self.shadow = options.get('shadow', self.SHADOW)
-        self.config_url = options.get('config_url' self.CONFIG_URL)
+        self.config_url = options.get('config_url', self.CONFIG_URL)
         self.go_debug = options.get('go_debug', self.GO_DEBUG)
 
 
