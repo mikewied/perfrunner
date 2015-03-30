@@ -32,7 +32,15 @@ class GatewayInstaller(object):
             'couchbase-sync-gateway_{}_x86_64-community.rpm',
         ),
         'http://latestbuilds.hq.couchbase.com/couchbase-sync-gateway': (
-            '0.0.0/416/couchbase-sync-gateway-enterprise_0.0.0-326_x86_64.rpm',
+            '0.0.0/{0}/couchbase-sync-gateway-community_{0}_x86_64.rpm',
+            '0.0.1/{0}/couchbase-sync-gateway-community_{0}_x86_64.rpm',
+            '1.0.0/{0}/couchbase-sync-gateway-enterprise_{0}_x86_64.rpm',
+            '1.0.1/{0}/couchbase-sync-gateway-enterprise_{0}_x86_64.rpm',
+            '1.0.2/{0}/couchbase-sync-gateway-community_{0}_x86_64.rpm',
+            '1.0.3/{0}/couchbase-sync-gateway-community_{0}_x86_64.rpm',
+            '1.0.4/{0}/couchbase-sync-gateway-community_{0}_x86_64.rpm',
+            '1.1.0/{0}/couchbase-sync-gateway-community_{0}_x86_64.rpm',
+                  
         ),
         'http://latestbuilds.hq.couchbase.com/couchbase-sync-gateway': (
             '0.0.0/{0}/couchbase-sync-gateway-community_{0}_x86_64.rpm',
@@ -122,18 +130,27 @@ class GatewayInstaller(object):
             f = open(target_path, 'w')
             f.write(contents)
             f.close()
-
+            
             # return name of file
             return target_filename
-
-        if self.test_config.gateway_settings.shadow == 'true':
+        
+        if self.test_config.gateway_settings.shadow == 'true'"
             return 'gateway_config_shadow_template.json'
         else:
             return 'gateway_config_template.json'
-
+            
+          
     def generate_sync_gateways_config(self):
         loader = FileSystemLoader('templates')
         env = Environment(loader=loader)
+        
+        template_filename = self.choose_template()
+        template = env.get_template(template_filename)
+        
+        if self.test_config.gateway_settings.shadow == 'true':
+            template = env.get_template('gateway_config_shadow_template.json')
+        else:
+            template = env.get_template('gateway_config_template.json')
 
         template_filename = self.choose_template()
         template = env.get_template(template_filename)
