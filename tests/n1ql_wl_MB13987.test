@@ -14,10 +14,10 @@ replica_number = 1
 password =
 
 [compaction]
-db_percentage = 10
+db_percentage = 30
 
 [load]
-items = 5000000
+items = 50000
 size = 1024
 workers = 20
 doc_gen = new
@@ -29,9 +29,9 @@ updates = 48
 deletes = 2
 throughput = 6000 
 query_throughput = 100
-items = 5000000
+items = 50000
 size = 1024
 doc_gen = new
 workers = 20
 query_workers = 10
-time = 1200
+time = 120
