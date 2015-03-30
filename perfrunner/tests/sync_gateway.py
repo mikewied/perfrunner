@@ -169,12 +169,6 @@ class GateloadTest(PerfTest):
         
         self.remote.collect_profile_data_gateways()
 
-        self.remote.collect_profile_data_gateways()
-        self.remote.collect_info_gateway()
-        self.remote.collect_info_gateload()
-        self.reporter.check_sgw_logs()
-        self.reporter.save_expvar()
-
         return self.collect_kpi()
 
 
