@@ -220,7 +220,7 @@ class RemoteLinuxHelper(object):
     def restart_with_tcmalloc_aggressive_decommit(self):
         logger.info('Enabling TCMalloc aggressive decommit')
         run('TCMALLOC_AGGRESSIVE_DECOMMIT=t '
-            'numactl --interleave=all /etc/init.d/couchbase-server restart")
+            'numactl --interleave=all /etc/init.d/couchbase-server restart')
             
     @all_hosts
     def restart_with_tcmalloc_aggressive_decommit(self):
