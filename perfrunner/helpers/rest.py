@@ -86,13 +86,15 @@ class RestHelper(object):
         logger.info('Adding new node: {}'.format(new_host))
 
         # accumulate roles for node
+        """
         if new_host in self.data_servers:
            services = ",".join("data")
         if new_host in self.n1ql_servers:
             services = ",".join("n1ql")
         if new_host in self.index_servers:
             services = ",".join("index")
-
+        """
+        pdb.set_trace()
         if uri:
             api = 'http://{}{}'.format(host_port, uri)
         else:

@@ -3,6 +3,7 @@ import time
 from optparse import OptionParser
 
 from logger import logger
+
 from perfrunner.helpers.memcached import MemcachedHelper
 from perfrunner.helpers.misc import server_group
 from perfrunner.helpers.monitor import Monitor
@@ -86,26 +87,26 @@ class ClusterManager(object):
                 for node in self.data_servers():
                     if host in node:
                         if len(roles) == 0:
-                            roles='data'
+		            roles='data'
                         else:
-                            roles=roles+',data'
+		            roles=roles+',data'
                 for node in self.index_servers():
                     if host in node:
                         if len(roles) == 0:
-                            roles=str('index')
+		            roles=str('index')
                         else:
-                            roles=roles+',index'
+		            roles=roles+',index'
                 for node in self.n1ql_servers():
                     if host in node:
                         if len(roles) == 0:
-                            roles=str('n1ql')
+		            roles=str('n1ql')
                         else:
-                            roles=roles+',n1ql'
+		            roles=roles+',n1ql'
 
                 uri = groups.get(server_group(servers[:initial_nodes],
                                               self.group_number, i))
                 role_param = "service_in=\"%s\""%roles
-                self.rest.add_node(master, self.clusters, host, role_param, uri)
+                self.rest.add_node(master, host, role_param, uri)
 
             # Rebalance
             master = servers[0]
