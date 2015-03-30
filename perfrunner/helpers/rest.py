@@ -133,7 +133,7 @@ class RestHelper(object):
                       replica_index, eviction_policy, threads_number,
                       password,use_gsi):
 
-        logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number))
+        logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number))
 
         api = 'http://{}/pools/default/buckets'.format(host_port)
         data = {
