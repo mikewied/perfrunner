@@ -219,6 +219,10 @@ class Worker(multiprocessing.Process):
 
         # Pre-generate a buffer of the maximum size to use for constructing documents.
         self.buffer = bytearray('x' for _ in range(SIZES[-1]))
+        
+  def _connect(self):
+        """Establish a connection to the Couchbase cluster."""
+        self.client = Couchbase.connect(bucket=self.bucket, host=self.host, port=self.port)
 
     def _connect(self):
         """Establish a connection to the Couchbase cluster."""
