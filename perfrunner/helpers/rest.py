@@ -84,6 +84,13 @@ class RestHelper(object):
     def add_node(self,  host_port, new_host, roles=None, uri=None):
         logger.info('Adding new node: {}'.format(new_host))
 
+        # accumulate roles for node
+        services = "data"
+        if new_host in self.n1ql_servers:
+            services = ",".join("n1ql")
+        if new_host in self.index_servers:
+            services = ",".join("index")
+
         if uri:
             api = 'http://{}{}'.format(host_port, uri)
         else:
@@ -92,7 +99,7 @@ class RestHelper(object):
             'hostname': new_host,
             'user': self.rest_username,
             'password': self.rest_password,
-            'services': roles
+            'services': services
         }
         self.post(url=api, data=data)
 

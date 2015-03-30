@@ -24,8 +24,8 @@ class ClusterManager(object):
         self.memcached = MemcachedHelper(test_config)
 
         self.clusters = cluster_spec.yield_clusters()
-        self.index = cluster_spec.yield_indexservers
-        self.n1ql_server = cluster_spec.yield_n1qlservers
+        self.index_servers = cluster_spec.yield_indexservers
+        self.n1ql_servers = cluster_spec.yield_n1qlservers
         self.servers = cluster_spec.yield_servers
         self.masters = cluster_spec.yield_masters
 

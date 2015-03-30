@@ -400,7 +400,7 @@ class RemoteLinuxHelper(object):
             'log': '/root/gateway.log',
         }
         
-        command = '{ulimit}; GODEBUG={godebug} nohup[ {sgw} {config} > {log} 2>&1 &'.format(**args)
+        command = '{ulimit}; GODEBUG={godebug} nohup {sgw} {config} > {log} 2>&1 &'.format(**args)
         logger.info("Command: {}".format(command))
         
         run(command, pty=False)
@@ -483,10 +483,10 @@ class RemoteLinuxHelper(object):
         get('gateload_config.json', 'gateload_config_{}.json'.format(idx))
         get('sgw_check_logs.out', 'sgw_check_logs_gateload_{}.out'.format(idx))
     
-    @all_gateloads
+    @all_gateways 
     def collect_profile_data_gateways(self):
         """
-        collect CPU and heap profile raw data as well as rendered pdfs
+        Collect CPU and heap profile raw data as well as rendered pdfs
         from go tool pprof
         """
         _if = self.detect_if()
