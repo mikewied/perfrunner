@@ -1,0 +1,37 @@
+[test_case]
+test = perfrunner.tests.tuq.TuqTest
+title = N1QL SELECT 1M docs x 1K, 3kWops, 3kRops, baseline queries, using GSI
+summary = N1QL SELECT 1M docs x 1K, 3kWops, 3kRops, baseline queries, using GSI
+larger_is_better = false
+
+[cluster]
+mem_quota = 204800
+initial_nodes = 1
+num_buckets = 1
+
+[bucket]
+replica_number = 1
+password =
+
+[compaction]
+db_percentage = 10
+
+[load]
+items = 5000000
+size = 1024
+workers = 20
+doc_gen = new
+
+[access]
+creates = 0
+reads = 50
+updates = 48 
+deletes = 2
+throughput = 6000 
+query_throughput = 100
+items = 5000000
+size = 1024
+doc_gen = new
+workers = 20
+query_workers = 10
+time = 1200
