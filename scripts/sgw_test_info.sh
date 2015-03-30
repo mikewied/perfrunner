@@ -75,6 +75,7 @@ then
                     fi
 
                 done
+               
                 maxPending=`curl "http://localhost:4985/_expvar" | grep maxPending | sed 's/\"//g' | sed 's/^.*maxPending: //' | sed -r 's/^([0-9]*).*/\1/'`
                 echo "maxPending: $maxPending"
                 echo "maxPending: $maxPending" >> $outfile
