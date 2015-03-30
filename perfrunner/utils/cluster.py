@@ -1,3 +1,4 @@
+import pdb
 import time
 from optparse import OptionParser
 
@@ -66,6 +67,7 @@ class ClusterManager(object):
                 self.rest.create_server_group(master, name=name)
 
     def add_nodes(self):
+        pdb.set_trace()
         logger.info('cluster spec'.format(self.clusters))
         for (_, servers), initial_nodes in zip(self.clusters,
                                                self.initial_nodes):
@@ -104,7 +106,7 @@ class ClusterManager(object):
                 uri = groups.get(server_group(servers[:initial_nodes],
                                               self.group_number, i))
                 role_param = "service_in=\"%s\""%roles
-                self.rest.add_node(master, n1ql, host, role_param, uri)
+                self.rest.add_node(master, self.clusters, host, role_param, uri)
 
             # Rebalance
             master = servers[0]
