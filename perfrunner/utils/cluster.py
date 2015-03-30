@@ -39,7 +39,7 @@ class ClusterManager(object):
         data_path, index_path = self.cluster_spec.paths
         for server in self.servers():
             if(self.index_servers()):
-               for node in self.indexservers():
+               for node in self.index_servers():
                   if server.split(':')[0] in node:
                       self.rest.set_data_path(server, secondary_path, secondary_path)
                   else:
