@@ -116,8 +116,7 @@ class ClusterManager(object):
 
         for master in self.masters():
             for bucket_name in self.test_config.buckets:
-                self.rest.create_bucket(self,
-                                        host_port=master,
+                self.rest.create_bucket(host_port=master,
                                         name=bucket_name,
                                         ram_quota=ram_quota,
                                         replica_number=replica_number,
