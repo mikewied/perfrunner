@@ -394,7 +394,7 @@ class RemoteLinuxHelper(object):
         
         args = {
             'ulimit': 'ulimit =n 65536',
-            'godebug'" godebug,
+            'godebug': godebug,
             'sgw': '/opt/couchbase-sync-gateway/bin/sync_gateway',
             'config': '/root/gateway_config.json',
             'log': '/root/gateway.log',
