@@ -331,13 +331,6 @@ class RemoteLinuxHelper(object):
     @seriesly_host
     def restart_seriesly(self):
         logger.info('Cleaning up and restarting seriesly')
-<<<<<<< HEAD
-
-        put('scripts/seriesly_roll_dbs.sh', '/root/seriesly_roll_dbs.sh')
-        run('chmod 777 /root/seriesly_roll_dbs.sh')
-        run('/root/seriesly_roll_dbs.sh', pty=False)
-
-=======
         """
         addition author unknown, uses fixed location for script, impact unknown!!
         """
@@ -345,7 +338,6 @@ class RemoteLinuxHelper(object):
         run('chmod 777 /root/seriesly_roll_dbs.sh')
         run('/root/seriesly_roll_dbs.sh', pty=False)
         
->>>>>>> 650428d... Update remote.py
         run('killall -9 sample seriesly', quiet=True)
         run('rm -f *.txt *.log *.gz *.json *.out',
             warn_only=True)
@@ -376,13 +368,8 @@ class RemoteLinuxHelper(object):
         logger.info('Installing Sync Gateway from source - {}'.format(commit_hash))
         put('scripts/install_sgw_from_source.sh', '/root/install_sgw_from_source.sh')
         run('chmod 777 /root/install_sgw_from_source.sh')
-<<<<<<< HEAD
         run('/root/install_sgw_from_source.sh {}'.format(commit_hash), pty=False)
-
-=======
-        run('/root/install_sgq_from_source.sh {}'.format(commit_hash), pty=False_
         
->>>>>>> 650428d... Update remote.py
     @all_gateways
     def uninstall_gateway(self):
         logger.info('Uninstalling Sync Gateway package')
@@ -401,17 +388,6 @@ class RemoteLinuxHelper(object):
     @all_gateways
     def start_gateway(self):
         logger.info('Starting Sync Gateway instances')
-<<<<<<< HEAD
-        _if = self.detect_if()
-        local_ip = self.detect_ip(_if)
-        index = self.gateways.index(local_ip)
-        source_config = 'templates/gateway_config_{}.json'.format(index)
-        put(source_config, '/root/gateway_config.json')
-        godebug = self.test_config.gateway_settings.go_debug
-        args = {
-            'ulimit': 'ulimit -n 65536',
-            'godebug': godebug,
-=======
         put('templates/gateway_config.json', '/root/gateway_config.json')
        
         godebug = self.test_config.gateway_settings.go_debug
@@ -419,20 +395,14 @@ class RemoteLinuxHelper(object):
         args = {
             'ulimit': 'ulimit =n 65536',
             'godebug'" godebug,
->>>>>>> 650428d... Update remote.py
             'sgw': '/opt/couchbase-sync-gateway/bin/sync_gateway',
             'config': '/root/gateway_config.json',
             'log': '/root/gateway.log',
         }
-<<<<<<< HEAD
-        command = '{ulimit}; GODEBUG={godebug} nohup {sgw} {config} > {log} 2>&1 &'.format(**args)
-        logger.info("Command: {}".format(command))
-=======
         
         command = '{ulimit}; GODEBUG={godebug} nohu[ {sgw} {config} > {log} 2>&1 &'.format(**args)
         logger.info("Command: {}".format(command))
         
->>>>>>> 650428d... Update remote.py
         run(command, pty=False)
 
     @all_gateways
@@ -459,12 +429,8 @@ class RemoteLinuxHelper(object):
         self.try_get('test_info_sar.txt', 'test_info_sar_{}.txt'.format(index))
         self.try_get('sgw_test_info.txt', 'sgw_test_info_{}.txt'.format(index))
         self.try_get('gateway_config.json', 'gateway_config_{}.json'.format(index))
-<<<<<<< HEAD
-        self.try_get('sgw_check_logs.out', 'sgw_check_logs_gateway_{}.out'.format(index))
-=======
         self.try_get('sgw_check_logs.out', 'sgw_check_logs_gateway_{}.out'.format(index + 1))
         self.try_get('gateload_expvar_{}.json'.format(index + 1), 'gateload_expvar_{}.json'.format(index + 1))
->>>>>>> 650428d... Update remote.py
 
     @all_gateloads
     def uninstall_gateload(self):
