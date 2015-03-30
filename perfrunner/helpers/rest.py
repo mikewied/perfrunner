@@ -83,18 +83,9 @@ class RestHelper(object):
         data = {'memoryQuota': mem_quota}
         self.post(url=api, data=data)
 
-    def add_node(self,  host_port, new_host, roles=None, uri=None):
+    def add_node(self,  host_port, new_host, services=None, uri=None):
         logger.info('Adding new node: {}'.format(new_host))
 
-        # accumulate roles for node
-        """
-        if new_host in self.data_servers:
-           services = ",".join("data")
-        if new_host in self.n1ql_servers:
-            services = ",".join("n1ql")
-        if new_host in self.index_servers:
-            services = ",".join("index")
-        """
         pdb.set_trace()
         if uri:
             api = 'http://{}{}'.format(host_port, uri)
