@@ -5,7 +5,8 @@ from datetime import datetime
 from multiprocessing import Process
 
 import requests
-from cbagent.collectors import (NSServer, PS, TypePerf, IO, Net, ActiveTasks,
+#from cbagent.collectors import (NSServer, PS, TypePerf, IO, Net, ActiveTasks,
+from cbagent.collectors import (NSServer, PS, IO, Net, ActiveTasks,
                                 SpringLatency, SpringQueryLatency,
                                 SpringN1QLQueryLatency,
                                 ObserveLatency, XdcrLag)
