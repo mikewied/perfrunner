@@ -131,7 +131,7 @@ class RestHelper(object):
 
     def create_bucket(self, host_port, name, ram_quota, replica_number,
                       replica_index, eviction_policy, threads_number,
-                      password,use_gsi):
+                      password, use_gsi):
 
         logger.info('Adding new bucket: {} using attributes ram quota {} replica_number {}, replica_index {} eviction {} threads {} '.format(name,ram_quota, replica_number,replica_index,eviction_policy,threads_number))
 
@@ -154,11 +154,11 @@ class RestHelper(object):
         self.post(url=api, data=data)
         
         for n1ql_host in  self.n1ql_hosts:
-             #need authentication params
-             if self.bucket.use_gsi:
-                 USE_GSI="USE GSI"
+             #need authentication params, use_gsi should be bucket specific
+             if use_gsi:
+                 USE_GSI_str="USE GSI"
              else:
-                 USE_GSI=""
+                 USE_GSI_str=""
              api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI_str)'
              logger.info('command to N1QL engine {} \n'.format(api))
              self.post(url=api)
