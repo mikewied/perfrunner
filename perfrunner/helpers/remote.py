@@ -326,7 +326,7 @@ class RemoteLinuxHelper(object):
     @all_hosts
     def collect_cbq_logs(self):
         logger.info('Getting cbq-engine logs')
-        get('/tmp/cbq.log')k
+        get('/tmp/cbq.log')
 
     @seriesly_host
     def restart_seriesly(self):
