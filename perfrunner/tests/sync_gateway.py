@@ -166,6 +166,8 @@ class GateloadTest(PerfTest):
         log_phase('Stats settings', self.test_config.stats_settings)
 
         self.workload()
+        
+        self.remote.collect_profile_data_gateways()
 
         self.remote.collect_profile_data_gateways()
         self.remote.collect_info_gateway()
