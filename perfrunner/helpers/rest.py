@@ -158,7 +158,7 @@ class RestHelper(object):
         self.post(url=api, data=data)
         
 #        for n1ql_host in self.cluster_spec.yield_n1qlservers():
-         if self.n1ql_hosts and not self.n1ql_hosts.isspace():
+        if self.n1ql_hosts and not self.n1ql_hosts.isspace():
              logger.info('****\n list of n1qlservers {}\n'.format(self.n1ql_host))
              api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI)'
              logger.info('command to N1QL engine {} \n'.format(api))
