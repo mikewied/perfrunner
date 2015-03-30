@@ -38,7 +38,7 @@ class RestHelper(object):
             cluster_spec.rest_credentials
         self.auth = (self.rest_username, self.rest_password)
         self.n1ql_hosts = cluster_spec.yield_n1qlservers()
-        self.indexer_hosts = cluster_spec.yield_indexers()
+        self.indexer_hosts = cluster_spec.yield_indexservers()
 
     @retry
     def get(self, **kwargs):
