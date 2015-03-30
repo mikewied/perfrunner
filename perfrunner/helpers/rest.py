@@ -37,8 +37,8 @@ class RestHelper(object):
         self.rest_username, self.rest_password = \
             cluster_spec.rest_credentials
         self.auth = (self.rest_username, self.rest_password)
-        self.n1ql_hosts = cluster_spec.yield_n1qlservers()
-        self.index_hosts = cluster_spec.yield_indexservers()
+        self.n1ql_servers = cluster_spec.yield_n1qlservers()
+        self.index_servers = cluster_spec.yield_indexservers()
 
     @retry
     def get(self, **kwargs):
@@ -153,10 +153,10 @@ class RestHelper(object):
             data.update({'threadsNumber': threads_number})
         self.post(url=api, data=data)
         
-        for n1ql_host in  self.n1ql_hosts:
+        for n1ql_host in  self.n1ql_servers:
              #need authentication params, use_gsi should be bucket specific
              if use_gsi:
-                 USE_GSI_str="USE GSI"
+                 USE_GSI_str="USING GSI"
              else:
                  USE_GSI_str=""
              api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI_str)'

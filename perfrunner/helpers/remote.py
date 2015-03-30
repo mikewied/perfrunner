@@ -393,14 +393,14 @@ class RemoteLinuxHelper(object):
         godebug = self.test_config.gateway_settings.go_debug
         
         args = {
-            'ulimit': 'ulimit =n 65536',
+            'ulimit': 'ulimit -n 65536',
             'godebug': godebug,
             'sgw': '/opt/couchbase-sync-gateway/bin/sync_gateway',
             'config': '/root/gateway_config.json',
             'log': '/root/gateway.log',
         }
         
-        command = '{ulimit}; GODEBUG={godebug} nohu[ {sgw} {config} > {log} 2>&1 &'.format(**args)
+        command = '{ulimit}; GODEBUG={godebug} nohup[ {sgw} {config} > {log} 2>&1 &'.format(**args)
         logger.info("Command: {}".format(command))
         
         run(command, pty=False)
@@ -479,24 +479,14 @@ class RemoteLinuxHelper(object):
         put('scripts/sgw_check_logs.sh', '/root/sgw_check_logs.sh')
         run('chmod 777 /root/sgw_*.sh')
         run('/root/sgw_check_logs.sh gateload > sgw_check_logs.out', warn_only=True)
-        self.try_get('gateload.log.gz', 'gateload.log-{}.gz'.format(idx))
-        self.try_get('gateload_config.json', 'gateload_config_{}.json'.format(idx))
-        self.try_get('sgw_check_logs.out', 'sgw_check_logs_gateload_{}.out'.format(idx))
-
-        expvar_url = "{}:9876/debug/vars".format(local_ip)
-        logger.info("Getting gateload expvar from {}".format(expvar_url))
-
-        dest_file = 'gateload_expvar_{}.json'.format(idx)
-        if os.path.exists(dest_file):
-            os.remove(dest_file)
-        self.wget(expvar_url, outdir='.', outfile=dest_file)
-        self.try_get(dest_file, dest_file)
-        logger.info('Saved {}'.format(dest_file))
-
-    @all_gateways
+        get('gateload.log.gz', 'gateload.log-{}.gz'.format(idx))
+        get('gateload_config.json', 'gateload_config_{}.json'.format(idx))
+        get('sgw_check_logs.out', 'sgw_check_logs_gateload_{}.out'.format(idx))
+    
+    @all_gateloads
     def collect_profile_data_gateways(self):
         """
-        Collect CPU and heap profile raw data as well as rendered pdfs
+        collect CPU and heap profile raw data as well as rendered pdfs
         from go tool pprof
         """
         _if = self.detect_if()
@@ -508,7 +498,7 @@ class RemoteLinuxHelper(object):
         put('scripts/sgw_collect_profile.sh', '/root/sgw_collect_profile.sh')
         run('chmod 777 /root/sgw_collect_profile.sh')
         run('/root/sgw_collect_profile.sh /opt/couchbase-sync-gateway/bin/sync_gateway /root', pty=False)
-        self.try_get('profile_data.tar.gz', 'profile_data.tar-{}.gz'.format(idx))
+        get('profile_data.tar.gz', 'profile_data.tar-{}.gz'.format(idx))
 
     @all_hosts
     def clean_mongodb(self):

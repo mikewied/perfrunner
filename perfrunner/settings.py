@@ -280,8 +280,8 @@ class ClusterSettings(object):
         self.sfwi = options.get('sfwi', self.SFWI)
         self.tcmalloc_aggressive_decommit = options.get('tcmalloc_aggressive_decommit',
                                                         self.TCMALLOC_AGGRESSIVE_DECOMMIT)
-        self.n1ql_hosts = []
-        self.index_hosts = []
+        self.n1ql_servers = []
+        self.index_servers = []
 
 class StatsSettings(object):
 
