@@ -6,7 +6,6 @@ import requests
 from decorator import decorator
 from logger import logger
 from requests.exceptions import ConnectionError
-#from perfrunner.settings import ClusterSpec
 
 MAX_RETRY = 5
 RETRY_DELAY = 5
@@ -38,7 +37,8 @@ class RestHelper(object):
         self.rest_username, self.rest_password = \
             cluster_spec.rest_credentials
         self.auth = (self.rest_username, self.rest_password)
-        self.n1ql_host = cluster_spec.yield_n1qlservers()
+        self.n1ql_hosts = cluster_spec.yield_n1qlservers()
+        self.indexer_hosts = cluster_spec.yield_indexers()
 
     @retry
     def get(self, **kwargs):
@@ -158,12 +158,12 @@ class RestHelper(object):
         self.post(url=api, data=data)
         
 #        for n1ql_host in self.cluster_spec.yield_n1qlservers():
-            if self.n1ql_host and not self.n1ql_host.isspace():
-               logger.info('****\n list of n1qlservers {}\n'.format(self.n1ql_host))
-               api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI)'
-               logger.info('command to N1QL engine {} \n'.format(api))
-               self.post(url=api)
-               time.sleep(self.num_items * 60/1000000)
+         if self.n1ql_hosts and not self.n1ql_hosts.isspace():
+             logger.info('****\n list of n1qlservers {}\n'.format(self.n1ql_host))
+             api = 'http://{}:8093/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI)'
+             logger.info('command to N1QL engine {} \n'.format(api))
+             self.post(url=api)
+             time.sleep(self.num_items * 60/1000000)
         """
            this is a kludge necessitated because there is no other way to detect completion
            no error is reported if no n1ql cbq defined, allows for subsequent creation of cbq-engine and or create primary 
@@ -343,7 +343,7 @@ class RestHelper(object):
         api = 'http://{}/controller/reAddNode'.format(host_port)
         data = {'otpNode': self.get_otp_node_name(node)}
         self.post(url=api, data=data)
-
+        
     def set_delta_recovery_type(self, host_port, node):
         logger.info('Enabling delta recovery: {}'.format(node))
 
