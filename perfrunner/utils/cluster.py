@@ -26,6 +26,7 @@ class ClusterManager(object):
         self.clusters = cluster_spec.yield_clusters()
         self.index_servers = cluster_spec.yield_indexservers
         self.n1ql_servers = cluster_spec.yield_n1qlservers
+        self.data_servers = cluster_spec.yield_dataservers
         self.servers = cluster_spec.yield_servers
         self.masters = cluster_spec.yield_masters
 

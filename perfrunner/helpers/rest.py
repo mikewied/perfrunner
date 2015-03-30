@@ -37,6 +37,7 @@ class RestHelper(object):
         self.rest_username, self.rest_password = \
             cluster_spec.rest_credentials
         self.auth = (self.rest_username, self.rest_password)
+        self.data_servers = cluster_spec.yield_dataservers()
         self.n1ql_servers = cluster_spec.yield_n1qlservers()
         self.index_servers = cluster_spec.yield_indexservers()
 
@@ -85,7 +86,8 @@ class RestHelper(object):
         logger.info('Adding new node: {}'.format(new_host))
 
         # accumulate roles for node
-        services = "data"
+        if new_host in self.data_servers:
+           services = ",".join("data")
         if new_host in self.n1ql_servers:
             services = ",".join("n1ql")
         if new_host in self.index_servers:
