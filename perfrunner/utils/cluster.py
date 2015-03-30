@@ -3,7 +3,6 @@ import time
 from optparse import OptionParser
 
 from logger import logger
-
 from perfrunner.helpers.memcached import MemcachedHelper
 from perfrunner.helpers.misc import server_group
 from perfrunner.helpers.monitor import Monitor
