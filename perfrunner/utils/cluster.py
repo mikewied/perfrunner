@@ -30,6 +30,11 @@ class ClusterManager(object):
         self.data_servers = cluster_spec.yield_dataservers
         self.servers = cluster_spec.yield_servers
         self.masters = cluster_spec.yield_masters
+        self.hostnames = cluster_spec.yield_hostnames
+        if self.n1ql_servers[0] :
+            self.cbq_engine = self.n1ql_servers[0].replace('8091','8093')
+        else
+            self.cbq_engine = ''
 
         self.initial_nodes = test_config.cluster.initial_nodes
         self.mem_quota = test_config.cluster.mem_quota
@@ -80,9 +85,11 @@ class ClusterManager(object):
                 groups = self.rest.get_server_groups(master)
             else:
                 groups = {}
+            known_nodes="ns_1%40{}".format(servers[0].split(':')[0])
             for i, host_port in enumerate(servers[1:initial_nodes],
                                           start=1):
                 host = host_port.split(':')[0]
+                known_nodes=known_nodes+"%2Cns_1%40"+host
                 roles=""
                 for node in self.data_servers():
                     if host in node:
@@ -105,10 +112,12 @@ class ClusterManager(object):
 
                 uri = groups.get(server_group(servers[:initial_nodes],
                                               self.group_number, i))
-                role_param = "service_in=\"%s\""%roles
-                self.rest.add_node(master, host, role_param, uri)
+                # curl -X POST -u A:p http://<master>/controller/addNode -d hostname=<newnode> -d user=A -d password=p
+                roles_param = "-d services={}".format(roles)
+                self.rest.add_node(master, host, roles_param, uri)
 
             # Rebalance
+            # curl -X POST -u A:p http://<master>/controller/rebalance -d knownNodes=ns_1%40<ip1>[%2Cns_1%40<ip2>]
             master = servers[0]
             known_nodes = servers[:initial_nodes]
             ejected_nodes = []

@@ -35,12 +35,13 @@ def retry(method, *args, **kwargs):
 class RestHelper(object):
 
     def __init__(self, cluster_spec):
+        pdb.set_trace()
         self.rest_username, self.rest_password = \
             cluster_spec.rest_credentials
         self.auth = (self.rest_username, self.rest_password)
-        self.data_servers = cluster_spec.yield_dataservers()
-        self.n1ql_servers = cluster_spec.yield_n1qlservers()
-        self.index_servers = cluster_spec.yield_indexservers()
+        #self.data_servers = cluster_spec.yield_dataservers()
+        #self.n1ql_servers = cluster_spec.yield_n1qlservers()
+        #self.index_servers = cluster_spec.yield_indexservers()
 
     @retry
     def get(self, **kwargs):
@@ -159,14 +160,14 @@ class RestHelper(object):
         for n1ql_host in  self.n1ql_servers:
              #need authentication params, use_gsi should be bucket specific
              if use_gsi:
-                 USE_GSI_str="USING GSI"
+                 api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` USING GSI".format,(self.cbq,name)'
              else:
-                 USE_GSI_str=""
-             api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.n1ql_host,name,USE_GSI_str)'
+                 api = 'http://{}/query/service?statement="CREATE PRIMARY INDEX ON `{}` {}".format,(self.cbq,name)'
              logger.info('command to N1QL engine {} \n'.format(api))
              self.post(url=api)
-             #need to wait on completion
-             time.sleep(self.num_items * 60/1000000)
+             #need to wait on completion of create primary index on empty bucket
+             time.sleep(120)
+             #time.sleep(self.num_items * 60/1000000)
         """
            this is a kludge necessitated because there is no other way to detect completion
            no error is reported if no n1ql cbq defined, allows for subsequent creation of cbq-engine and or create primary 

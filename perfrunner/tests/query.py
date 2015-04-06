@@ -100,6 +100,16 @@ class DevQueryLatencyTest(DevIndexTest, QueryLatencyTest):
 
     pass
 
+class N1QLQueryLatencyTest(N1QLIndexTest, N1QLLatencyTest):
+    COLLECTORS = {'index_latency': True, 'n1ql_latency': True}
+    
+    def run(self):
+        super(2iLatencyTest, self).run()
+
+        if self.test_config.stats_settings.enabled:
+            self.reporter.post_to_sf(
+                *self.metric_helper.calc_observe_latency(percentile=95)
+            )
 
 class QueryManualCompactionTest(QueryTest):
 
