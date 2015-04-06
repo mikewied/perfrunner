@@ -16,7 +16,6 @@ class TuqTest(PerfTest):
 
     def __init__(self, *args, **kwargs):
         super(TuqTest, self).__init__(*args, **kwargs)
-        self.n1ql = True
         self.target_iterator = TargetIterator(self.cluster_spec,
                                               self.test_config,
                                               prefix='')

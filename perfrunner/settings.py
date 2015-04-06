@@ -304,12 +304,12 @@ class ClusterSettings(object):
 class StatsSettings(object):
 
     ENABLED = 1
-    POST_TO_SF = 0
+    POST_TO_SF = 1
     INTERVAL = 5
     LAT_INTERVAL = 1
     POST_RSS = 0
     POST_CPU = 0
-
+    
     def __init__(self, options):
         self.enabled = int(options.get('enabled', self.ENABLED))
         self.post_to_sf = int(options.get('post_to_sf', self.POST_TO_SF))

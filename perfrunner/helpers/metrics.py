@@ -186,6 +186,22 @@ class MetricHelper(object):
 
         return round(query_latency), metric, metric_info
 
+    def calc_n1ql_latency(self, percentile):
+        metric = '{}_{}'.format(self.test_config.name, self.cluster_spec.name)
+        title = '{}th percentile n1ql latency (ms), {}'.format(percentile,
+                                                                self.metric_title)
+        metric_info = self._get_metric_info(title)
+
+        timings = []
+        for bucket in self.test_config.buckets:
+            db = 'spring_n1ql_latency{}{}'.format(self.cluster_names[0],
+                                                   bucket)
+            data = self.seriesly[db].get_all()
+            timings += [value['latency_query'] for value in data.values()]
+        n1ql_latency = np.percentile(timings, percentile)
+
+        return round(n1ql_latency), metric, metric_info
+
     def calc_kv_latency(self, operation, percentile):
         metric = '{}_{}_{}th_{}'.format(self.test_config.name,
                                         operation,
