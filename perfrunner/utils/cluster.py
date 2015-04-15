@@ -30,10 +30,10 @@ class ClusterManager(object):
         self.servers = cluster_spec.yield_servers
         self.masters = cluster_spec.yield_masters
         self.hostnames = cluster_spec.yield_hostnames
-        if self.n1ql_servers[0] :
-            self.cbq_engine = self.n1ql_servers[0].replace('8091','8093')
-        else
-            self.cbq_engine = ''
+        self.cbq_engine = ''
+        for cbq_host in cluster_spec.yield_n1qlservers():
+            self.cbq_engine = cbq_host
+            self.n1ql = True
 
         self.initial_nodes = test_config.cluster.initial_nodes
         self.mem_quota = test_config.cluster.mem_quota
@@ -81,39 +81,38 @@ class ClusterManager(object):
                 groups = self.rest.get_server_groups(master)
             else:
                 groups = {}
-            known_nodes="ns_1%40{}".format(servers[0].split(':')[0])
             for i, host_port in enumerate(servers[1:initial_nodes],
                                           start=1):
                 host = host_port.split(':')[0]
-                known_nodes=known_nodes+"%2Cns_1%40"+host
                 roles=""
                 for node in self.data_servers():
                     if host in node:
                         if len(roles) == 0:
-                            roles='data'
+                            roles='kv'
                         else:
-                            roles=roles+',data'
+                            roles=roles+':kv'
                 for node in self.index_servers():
                     if host in node:
                         if len(roles) == 0:
                             roles=str('index')
                         else:
-                            roles=roles+',index'
+                            roles=roles+':index'
                 for node in self.n1ql_servers():
                     if host in node:
                         if len(roles) == 0:
                             roles=str('n1ql')
                         else:
-                            roles=roles+',n1ql'
+                            roles=roles+':n1ql'
 
                 uri = groups.get(server_group(servers[:initial_nodes],
                                               self.group_number, i))
-                # curl -X POST -u A:p http://<master>/controller/addNode -d hostname=<newnode> -d user=A -d password=p
-                roles_param = "-d services={}".format(roles)
-                self.rest.add_node(master, host, roles_param, uri)
+                if len(roles) > 0:
+                   services_param = "[{}]".format(roles)
+                else:
+                   services_param = "" 
+                self.rest.add_node(master, host, services_param, uri)
 
             # Rebalance
-            # curl -X POST -u A:p http://<master>/controller/rebalance -d knownNodes=ns_1%40<ip1>[%2Cns_1%40<ip2>]
             master = servers[0]
             known_nodes = servers[:initial_nodes]
             ejected_nodes = []

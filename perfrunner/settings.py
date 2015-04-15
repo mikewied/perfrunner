@@ -1,3 +1,4 @@
+import pdb
 import json
 import os.path
 from ConfigParser import SafeConfigParser, NoOptionError, NoSectionError
@@ -30,6 +31,7 @@ class Config(object):
     def __init__(self):
         self.config = SafeConfigParser()
         self.name = ''
+        self.n1ql = False
 
     def parse(self, fname, override=()):
         logger.info('Reading configuration file: {}'.format(fname))
@@ -295,11 +297,10 @@ class ClusterSettings(object):
         self.num_cpus = int(options.get('num_cpus', self.NUM_CPUS))
         self.disable_moxi = options.get('disable_moxi')
         self.run_cbq = options.get('run_cbq', self.RUN_CBQ)
+        self.n1ql = options.get('run_cbq', self.RUN_CBQ)
         self.sfwi = options.get('sfwi', self.SFWI)
         self.tcmalloc_aggressive_decommit = options.get('tcmalloc_aggressive_decommit',
                                                         self.TCMALLOC_AGGRESSIVE_DECOMMIT)
-        self.n1ql_hosts = []
-        self.index_hosts = []
 
 class StatsSettings(object):
 
@@ -309,7 +310,8 @@ class StatsSettings(object):
     LAT_INTERVAL = 1
     POST_RSS = 0
     POST_CPU = 0
-    
+    SKIP_PRIMARY_INDEX = 1
+
     def __init__(self, options):
         self.enabled = int(options.get('enabled', self.ENABLED))
         self.post_to_sf = int(options.get('post_to_sf', self.POST_TO_SF))
@@ -317,6 +319,7 @@ class StatsSettings(object):
         self.lat_interval = int(options.get('lat_interval', self.LAT_INTERVAL))
         self.post_rss = int(options.get('post_rss', self.POST_RSS))
         self.post_cpu = int(options.get('post_cpu', self.POST_CPU))
+        self.skip_primary_index = int(options.get('skip_Primary_index', self.SKIP_PRIMARY_INDEX))
 
 
 class BucketSettings(object):
@@ -428,6 +431,9 @@ class PhaseSettings(object):
     WORKING_SET = 100
     WORKING_SET_ACCESS = 100
 
+    N1QL = 0
+    USE_GSI = 0
+ 
     WORKERS = 12
     QUERY_WORKERS = 0
     DCP_WORKERS = 0
@@ -465,6 +471,8 @@ class PhaseSettings(object):
                                              self.QUERY_WORKERS))
         self.dcp_workers = int(options.get('dcp_workers', self.DCP_WORKERS))
 
+        self.n1ql = options.get('n1ql', self.N1QL) 
+        self.use_gsi = options.get('use_gsi', self.USE_GSI) 
         self.seq_reads = self.SEQ_READS
         self.seq_updates = self.SEQ_UPDATES
 
@@ -624,3 +632,4 @@ class WorkerSettings(PhaseSettings):
     def __init__(self, options):
         self.reuse_worker = options.get('reuse_workspace', self.REUSE_WORKSPACE)
         self.worker_dir = options.get('workspace_location', self.WORKSPACE_DIR)
+ 
