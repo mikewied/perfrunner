@@ -319,6 +319,7 @@ class BucketSettings(object):
     REPLICA_INDEX = 0
     EVICTION_POLICY = 'valueOnly'  # alt: fullEviction
     EXPIRY_PAGER_SLEEP_TIME = -1
+    USE_GSI = 0
 
     def __init__(self, options):
         self.password = options.get('password', self.PASSWORD)
@@ -340,6 +341,10 @@ class BucketSettings(object):
         )
         self.eviction_policy = \
             options.get('eviction_policy', self.EVICTION_POLICY)
+
+        self.use_gsi = int(
+            options.get('use_gsi', self.USE_GSI)
+        )
 
         self.threads_number = options.get('threads_number')  # 2.x
 
