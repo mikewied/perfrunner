@@ -72,6 +72,16 @@ class ClusterSpec(Config):
                 yield server
 
     @safe
+    def yield_databyclusters(self):
+        try:
+            for cluster_name, servers in self.config.items('data'):
+                yield cluster_name, servers.split()
+        except NoSectionError:
+        #to avoid regression, assume all nodes take service role of data if none mentioned
+            for custer_name, servers in self.config.items('clusters'):
+                 yield cluster_name, servers.split()
+
+    @safe
     def yield_n1qlbyclusters(self):
         for cluster_name, servers in self.config.items('n1ql'):
                 yield cluster_name, servers.split()
@@ -83,6 +93,11 @@ class ClusterSpec(Config):
                 yield cluster_name,servers.split()
         except NoSectionError:
             pass
+                
+    @safe
+    def yield_dataservers(self):
+        for _, servers in self.yield_databyclusters():
+                yield servers
                 
     @safe
     def yield_n1qlservers(self):

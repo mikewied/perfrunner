@@ -26,6 +26,7 @@ class ClusterManager(object):
         self.clusters = cluster_spec.yield_clusters()
         self.index_servers = cluster_spec.yield_indexservers
         self.n1ql_servers = cluster_spec.yield_n1qlservers
+        self.data_servers = cluster_spec.yield_dataservers
         self.servers = cluster_spec.yield_servers
         self.masters = cluster_spec.yield_masters
 
@@ -36,13 +37,12 @@ class ClusterManager(object):
     def set_data_path(self):
         data_path, index_path = self.cluster_spec.paths
         for server in self.servers():
-            if(self.index()):
-                for node in self.index():
-                    if server.split(':')[0] in node:
-                        self.rest.set_data_path(server, secondary_path,
-                                                secondary_path)
-                    else:
-                        self.rest.set_data_path(server, data_path, index_path)
+            if(self.index_servers()):
+               for node in self.index_servers():
+                  if server.split(':')[0] in node:
+                      self.rest.set_data_path(server, secondary_path, secondary_path)
+                  else:
+                      self.rest.set_data_path(server, data_path, index_path)
             else:
                 self.rest.set_data_path(server, data_path, index_path)
 
@@ -79,20 +79,29 @@ class ClusterManager(object):
             for i, host_port in enumerate(servers[1:initial_nodes],
                                           start=1):
                 host = host_port.split(':')[0]
-                roles = []
-                for node in self.data():
+                roles=""
+                for node in self.data_servers():
                     if host in node:
-                        roles.append('data')
-                for node in self.index():
+                        if len(roles) == 0:
+                            roles='data'
+                        else:
+                            roles=roles+',data'
+                for node in self.index_servers():
                     if host in node:
-                        roles.append('index')
-                for node in self.n1ql():
+                        if len(roles) == 0:
+                            roles=str('index')
+                        else:
+                            roles=roles+',index'
+                for node in self.n1ql_servers():
                     if host in node:
-                        roles.append('n1ql')
+                        if len(roles) == 0:
+                            roles=str('n1ql')
+                        else:
+                            roles=roles+',n1ql'
+
                 uri = groups.get(server_group(servers[:initial_nodes],
                                               self.group_number, i))
-                role = ':'.join(str(r) for r in roles)
-                role_param = "service_in=\"%s\""%role_list
+                role_param = "service_in=\"%s\""%roles
                 self.rest.add_node(master, host, role_param, uri)
 
             # Rebalance

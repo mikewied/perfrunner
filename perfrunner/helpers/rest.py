@@ -37,8 +37,9 @@ class RestHelper(object):
         self.rest_username, self.rest_password = \
             cluster_spec.rest_credentials
         self.auth = (self.rest_username, self.rest_password)
-        self.n1ql_hosts = cluster_spec.yield_n1qlservers()
-        self.index_hosts = cluster_spec.yield_indexservers()
+        self.data_servers = cluster_spec.yield_dataservers()
+        self.n1ql_servers = cluster_spec.yield_n1qlservers()
+        self.index_servers = cluster_spec.yield_indexservers()
 
     @retry
     def get(self, **kwargs):
@@ -81,15 +82,8 @@ class RestHelper(object):
         data = {'memoryQuota': mem_quota}
         self.post(url=api, data=data)
 
-    def add_node(self, host_port, new_host, roles=None, uri=None):
+    def add_node(self,  host_port, new_host, services=None, uri=None):
         logger.info('Adding new node: {}'.format(new_host))
-
-        # accumulate roles for node
-        services = "data"
-        if new_host in self.n1ql_servers:
-            services = ",".join("n1ql")
-        if new_host in self.index_servers:
-            services = ",".join("index")
 
         if uri:
             api = 'http://{}{}'.format(host_port, uri)
