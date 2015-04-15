@@ -95,16 +95,6 @@ class ClusterSpec(Config):
                 yield servers
 
     @safe
-    def yield_n1qlserverss(self):
-        for _, servers in self.yield_n1qlbyclusters():
-                yield servers
-
-    @safe
-    def yield_indexserverss(self):
-        for _, servers in self.yield_indexbyclusters():
-                yield servers
-
-    @safe
     def yield_hostnames(self):
         for _, servers in self.yield_clusters():
             for server in servers:
