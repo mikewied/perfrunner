@@ -77,6 +77,15 @@ class ClusterSpec(Config):
             for server in servers:
                 yield server.split(':')[0]
 
+    @safe
+    def yield_servers_by_role(self, role):
+        for name, servers in self.config.items('clusters'):
+            has_service = []
+            for server in servers.split():
+                if role in server.split(',')[1:]:
+                    has_service.append(server.split(',')[0])
+            yield name, has_service
+
     @property
     @safe
     def roles(self):
@@ -487,6 +496,8 @@ class IndexSettings(PhaseSettings):
     VIEWS = '[1]'
     DISABLED_UPDATES = 0
     PARAMS = '{}'
+    PRIMARY_INDEXES = False
+    USE_GSI = False
 
     def __init__(self, options):
         self.views = eval(options.get('views', self.VIEWS))
@@ -494,6 +505,9 @@ class IndexSettings(PhaseSettings):
         self.disabled_updates = int(options.get('disabled_updates',
                                                 self.DISABLED_UPDATES))
         self.index_type = options.get('index_type')
+        self.primary_indexes = eval(options.get('primary_index',
+                                                self.PRIMARY_INDEXES))
+        self.use_gsi = eval(options.get('use_gsi', self.USE_GSI))
 
 
 class AccessSettings(PhaseSettings):

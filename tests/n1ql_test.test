@@ -1,0 +1,36 @@
+[test_case]
+test = perfrunner.tests.n1ql.N1QLTest
+title = 1 node, 20M docs, 100 updates/sec, 100 queries/sec, multiple emitted fields
+summary = Write-only query test, 1 node, 1 bucket x 20M x 1KB, 100 sets/sec, 100 qps
+larger_is_better = false
+
+[cluster]
+mem_quota = 2048
+initial_nodes = 3
+num_buckets = 1
+
+[load]
+items = 10000
+size = 1024
+workers = 20
+
+[index]
+primary_index = True
+index_type = range
+use_gsi = False
+
+[access]
+creates = 0
+reads = 0
+updates = 100
+deletes = 0
+throughput = 100
+items = 10000
+size = 1024
+workers = 1
+time = 60
+
+[workspace_settings]
+[worker_settings]
+reuse_workspace = true
+workspace_location = /tmp/n1ql_wksp
