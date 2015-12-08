@@ -405,7 +405,7 @@ class RemoteLinuxHelper(object):
             run('rm -rf %s' % backup_path)
         if wrapper:
             for master in self.cluster_spec.yield_masters():
-                cmd = 'cd /opt/couchbase/bin && ./cbbackupwrapper' \
+                cmd = '/opt/couchbase/bin/cbbackupwrapper' \
                       ' http://%s:8091 %s -u %s -p %s %s' \
                       % (master.split(':')[0], backup_path,
                          self.cluster_spec.rest_credentials[0],
